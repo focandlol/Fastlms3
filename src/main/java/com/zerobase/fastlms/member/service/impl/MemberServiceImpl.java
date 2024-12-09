@@ -22,6 +22,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -39,6 +40,7 @@ public class MemberServiceImpl implements MemberService {
     private final MemberMapper memberMapper;
 
     @Override
+    @Transactional
     public void updateLoginDate(String userId, LocalDateTime loginDate) {
         Optional<Member> mem = memberRepository.findById(userId);
         if (!mem.isPresent()) {
@@ -48,7 +50,6 @@ public class MemberServiceImpl implements MemberService {
         Member member = mem.get();
 
         member.setLastLoginDate(loginDate);
-        memberRepository.save(member);
     }
     
     /**
@@ -105,7 +106,7 @@ public class MemberServiceImpl implements MemberService {
         member.setEmailAuthYn(true);
         member.setEmailAuthDt(LocalDateTime.now());
         memberRepository.save(member);
-        
+
         return true;
     }
     

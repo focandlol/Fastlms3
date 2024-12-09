@@ -6,6 +6,7 @@ import com.zerobase.fastlms.member.repository.HistoryRepository;
 import com.zerobase.fastlms.member.service.HistoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDateTime;
@@ -19,6 +20,7 @@ public class HistoryServiceImpl implements HistoryService {
     private final HistoryRepository historyRepository;
 
     @Override
+    @Transactional
     public LocalDateTime save(String userId, String userAgent, String ip) {
         History save = historyRepository.save(
                 History.builder()
@@ -32,6 +34,7 @@ public class HistoryServiceImpl implements HistoryService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<HistoryDto> getHistory(String userId) {
         List<History> historyList = historyRepository.findByUserId(userId);
         long totalCount = this.historyRepository.countByUserId(userId);

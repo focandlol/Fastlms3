@@ -9,6 +9,7 @@ import com.zerobase.fastlms.admin.repository.BannerRepository;
 import com.zerobase.fastlms.admin.service.BannerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDateTime;
@@ -41,6 +42,7 @@ public class BannerServiceImpl implements BannerService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public BannerDto findById(long id) {
         Optional<Banner> optional = bannerRepository.findById(id);
         if (optional.isPresent()) {
@@ -50,6 +52,7 @@ public class BannerServiceImpl implements BannerService {
     }
 
     @Override
+    @Transactional
     public boolean save(BannerInput parameter) {
         LocalDateTime now = LocalDateTime.now();
         Banner banner = Banner.builder()
@@ -71,6 +74,7 @@ public class BannerServiceImpl implements BannerService {
     }
 
     @Override
+    @Transactional
     public boolean update(BannerInput parameter) {
         Optional<Banner> ba = bannerRepository.findById(parameter.getId());
 
@@ -85,12 +89,12 @@ public class BannerServiceImpl implements BannerService {
             banner.setUpdateDate(LocalDateTime.now());
             banner.setShow(parameter.isShow());
 
-            bannerRepository.save(banner);
         }
         return true;
     }
 
     @Override
+    @Transactional
     public boolean delete(String idList) {
         if (idList != null && !idList.isEmpty()) {
             String[] ids = idList.split(",");
@@ -109,6 +113,7 @@ public class BannerServiceImpl implements BannerService {
         return true;
     }
 
+    @Transactional
     public List<BannerDto> getBannerList() {
         return bannerRepository.findByOrderBySortSequence().stream()
                 .map(a -> BannerDto.of(a))
