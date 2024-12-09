@@ -8,7 +8,6 @@ public class PageUtilTest {
         PageUtil pageUtil = new PageUtil(151, 10, 3, "");
         String htmlPager = pageUtil.pager();
 
-        System.out.println(htmlPager);
 
 
     }

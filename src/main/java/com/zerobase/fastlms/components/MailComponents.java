@@ -1,6 +1,7 @@
 package com.zerobase.fastlms.components;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -11,6 +12,7 @@ import javax.mail.internet.MimeMessage;
 
 @RequiredArgsConstructor
 @Component
+@Slf4j
 public class MailComponents {
     
     private final JavaMailSender javaMailSender;
@@ -44,7 +46,7 @@ public class MailComponents {
             result = true;
             
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            log.error(e.getMessage());
         }
         
         return result;
