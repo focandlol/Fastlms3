@@ -113,7 +113,7 @@ public class BannerServiceImpl implements BannerService {
         return true;
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public List<BannerDto> getBannerList() {
         return bannerRepository.findByOrderBySortSequence().stream()
                 .map(a -> BannerDto.of(a))
